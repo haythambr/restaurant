@@ -1,0 +1,3 @@
+[submodule "restaurant"]
+        path = restaurant
+	url = https://github.com/haythambr/restaurant.git
