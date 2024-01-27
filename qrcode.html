@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QR Code Password Input</title>
+    <style>
+        body {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+        }
+    </style>
+</head>
+<body>
+    <div id="qrcode"></div>
+
+    <script src="https://cdn.rawgit.com/davidshimjs/qrcodejs/gh-pages/qrcode.min.js"></script>
+    <script>
+        // Password for redirection
+        var correctPassword = "123";
+
+        // Create QR code with input field
+        var qrcode = new QRCode(document.getElementById("qrcode"), {
+            text: "",  // Empty string initially
+            width: 128,
+            height: 128
+        });
+
+        // Function to handle QR code click
+        function handleQRCodeClick() {
+            var enteredPassword = prompt("Enter the password:");
+
+            if (enteredPassword === correctPassword) {
+                window.location.href = "https://www.youtube.com";
+            } else {
+                alert("Incorrect password. Try again.");
+            }
+        }
+
+        // Add click event to dynamically created QR code container
+        document.getElementById("qrcode").addEventListener("click", handleQRCodeClick);
+
+        // Initially set QR code text to trigger the click event
+        qrcode.makeCode("click");
+    </script>
+</body>
+</html>
