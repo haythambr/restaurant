@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>QR Code Password Input</title>
+    <title>Password Protected Page</title>
     <style>
         body {
             display: flex;
@@ -12,10 +12,44 @@
             height: 100vh;
             margin: 0;
         }
+
+        #passwordPopup {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            align-items: center;
+            justify-content: center;
+        }
+
+        #passwordForm {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        #passwordResult {
+            margin-top: 20px;
+            font-weight: bold;
+        }
     </style>
 </head>
 <body>
-    <p style="display:none;"></p>
+
+    <!-- Password Popup -->
+    <div id="passwordPopup">
+        <div id="passwordForm">
+            <label for="passwordInput">Enter Password:</label>
+            <input type="password" id="passwordInput">
+            <button onclick="checkPassword()">Submit</button>
+            <p id="passwordResult"></p>
+        </div>
+    </div>
+
     <div id="qrcode"></div>
 
     <script src="https://cdn.rawgit.com/davidshimjs/qrcodejs/gh-pages/qrcode.min.js"></script>
@@ -25,27 +59,36 @@
 
         // Create QR code with input field
         var qrcode = new QRCode(document.getElementById("qrcode"), {
-            text: "",  // Empty string initially
+            text: "https://haythambr.github.io/restaurant/qrcode",
             width: 128,
             height: 128
         });
 
-        // Function to handle QR code click
-        function handleQRCodeClick() {
-            var enteredPassword = prompt("Enter the password:");
+        // Function to show the password popup
+        function showPasswordPopup() {
+            document.getElementById("passwordPopup").style.display = "flex";
+        }
+
+        // Function to check the entered password
+        function checkPassword() {
+            var enteredPassword = document.getElementById("passwordInput").value;
 
             if (enteredPassword === correctPassword) {
-                window.location.href = "https://www.youtube.com";
+                document.getElementById("passwordResult").style.color = "green";
+                document.getElementById("passwordResult").textContent = "Password is correct!";
             } else {
-                alert("Incorrect password. Try again.");
+                document.getElementById("passwordResult").style.color = "red";
+                document.getElementById("passwordResult").textContent = "Incorrect password. Try again.";
             }
         }
 
-        // Add click event to dynamically created QR code container
-        document.getElementById("qrcode").addEventListener("click", handleQRCodeClick);
+        // Show the password popup when the page is loaded or reloaded
+        window.onload = showPasswordPopup;
 
-        // Initially set QR code text to trigger the click event
-        qrcode.makeCode("https://haythambr.github.io/restaurant/qrcode");
+        // Add click event to dynamically created QR code container
+        document.getElementById("qrcode").addEventListener("click", function() {
+            showPasswordPopup();
+        });
     </script>
 </body>
 </html>
